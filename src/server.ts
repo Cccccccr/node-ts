@@ -2,15 +2,22 @@ import router from './api/index';
 import * as path from 'path';
 import * as KoaStatic from 'koa-static';
 import * as cors from 'koa2-cors';
+import Website from './config/website';
 
 const app = require('./app');
+const website = new Website({
+  scheme: 'http',
+  host: 'localhost',
+  port: 8888
+});
 
 // app.use(cors());
-app.use(KoaStatic(path.join(__dirname, '../pages')));
+console.log(__dirname);
+app.use(KoaStatic(path.join(__dirname, 'pages')));
 
-const server = app.listen(3000, () => {
-  console.log('Server is running at http://localhost:3000');
-  console.log('Press CTRL-C to stop \n');
+const server = app.listen(website.port, () => {
+  console.log(`Server is running at ${website.getUrl()}`);
+  console.log('Press CTRL-C to stop.');
 });
 
 app.use(router.routes());
