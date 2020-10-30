@@ -1,8 +1,10 @@
-import router from './api/index';
 import * as path from 'path';
-import * as KoaStatic from 'koa-static';
-import * as cors from 'koa2-cors';
-import Website from './config/website';
+import {
+  router,
+  KoaStatic,
+  cors,
+  Website
+} from './importCom';
 
 const app = require('./app');
 const website = new Website({
@@ -11,15 +13,14 @@ const website = new Website({
   port: 8888
 });
 
-// app.use(cors());
-console.log(__dirname);
+app.use(cors());
 app.use(KoaStatic(path.join(__dirname, 'pages')));
+
+app.use(router.routes());
 
 const server = app.listen(website.port, () => {
   console.log(`Server is running at ${website.getUrl()}`);
   console.log('Press CTRL-C to stop.');
 });
-
-app.use(router.routes());
 
 module.exports = server;
