@@ -1,8 +1,10 @@
 import session from './session';
+import cookies from './cookies';
 import { RouterCon } from '../comInterface';
 
 const modules: Array<RouterCon> = [
-    session
+    session,
+    cookies
 ];
 
 const user: RouterCon = {

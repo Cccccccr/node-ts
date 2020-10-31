@@ -14,7 +14,7 @@ const website = new Website({
 });
 
 app.use(cors());
-app.use(KoaStatic(path.join(__dirname, 'pages')));
+app.use(KoaStatic(path.join(__dirname, 'static')));
 
 app.use(router.routes());
 

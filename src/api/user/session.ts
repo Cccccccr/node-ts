@@ -18,6 +18,9 @@ const checkSession: RouterCon = {
     path: '/checkSession',
     handle: async ctx => {
         console.log('checkSession', ctx);
+        ctx.body = {
+            path: 'checkSession'
+        };
     }
 };
 
