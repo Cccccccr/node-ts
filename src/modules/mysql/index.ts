@@ -6,13 +6,10 @@ const connectConfig = new ConnectMysql({
     port: 3306,
     user: 'root',
     password: 'el1478ELS',
-    database: 'activity_db'
+    database: 'activity_db' // activity_db
 });
 
-console.log(connectConfig);
 const pool = connectConfig.createPool();
-
-console.log(pool);
 
 class ActicityDB {
     constructor() {}

@@ -23,6 +23,10 @@ class ConnectMysql {
     public createPool(conf: MysqlConnectConf = this.initConf) {
         return mysql.createPool(conf);
     }
+
+    public createConnection(conf: MysqlConnectConf = this.initConf) {
+        return mysql.createConnection(conf);
+    }
 }
 
 export default ConnectMysql;
