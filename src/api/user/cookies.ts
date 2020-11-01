@@ -1,6 +1,8 @@
 import { RouterCon } from '../comInterface';
 import { methodsEnum } from '../comData';
 
+const maxAge = 1000 * 60 * 60;
+
 const setCookies: RouterCon = {
     method: methodsEnum.get,
     path: '/setCookies',
@@ -8,7 +10,7 @@ const setCookies: RouterCon = {
         let cookies: string = '';
         cookies = 'leonruncai - node frame';
         ctx.cookies.set('username', 'leonruncai', {
-            maxAge: 1000 * 60,
+            maxAge,
             httpOnly: true
         });
         ctx.body = {

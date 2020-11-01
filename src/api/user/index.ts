@@ -7,10 +7,10 @@ const modules: Array<RouterCon> = [
     cookies
 ];
 
-const user: RouterCon = {
+const User: RouterCon = {
     path: '/user',
     modules
 };
 
-export default user;
+export default User;
 

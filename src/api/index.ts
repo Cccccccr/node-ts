@@ -1,5 +1,6 @@
 import * as Router from 'koa-router';
-import user from './user/index';
+import User from './user/index';
+import Rsa from './rsa';
 
 import { RouterCon } from './comInterface';
 import { methodsEnum } from './comData';
@@ -8,7 +9,8 @@ import { methodsEnum } from './comData';
 const router = new Router();
 const basePath = '/fcgi';
 const modulesList: RouterCon[] = [
-    user
+    User,
+    Rsa
 ];
 
 const pathArr: Array<string> = [];

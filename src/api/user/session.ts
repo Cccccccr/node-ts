@@ -1,3 +1,4 @@
+import * as koaSession from 'koa-session';
 import { RouterCon } from '../comInterface';
 import { methodsEnum } from '../comData';
 

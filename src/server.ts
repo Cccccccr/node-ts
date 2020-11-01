@@ -6,6 +6,11 @@ import {
   Website
 } from './importCom';
 
+import acticityDB from './modules/mysql';
+console.log(acticityDB);
+acticityDB.query();
+
+
 const app = require('./app');
 const website = new Website({
   scheme: 'http',
