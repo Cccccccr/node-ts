@@ -5,8 +5,8 @@ const connectConfig = new ConnectMysql({
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: 'el1478ELS',
-    database: 'activity_db' // activity_db
+    password: 'qwer0515',
+    database: 'school_activity' // activity_db
 });
 
 const pool = connectConfig.createPool();
@@ -14,17 +14,28 @@ const pool = connectConfig.createPool();
 class ActicityDB {
     constructor() {}
 
-    public query(): Promise<any> {
+    public query(sql: string): Promise<any> {
         return new Promise((resolve, reject) => {
-            pool.query('SELECT * from ceshidata', function (error: MysqlError | null, results: any) {
+            pool.query(sql, function (error: MysqlError | null, results: any) {
                 if (error) {
-                    throw error;
+                    reject(error);
                 }
                 resolve(results);
             });
         });
     }
-}
+
+    public insert(sql: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            pool.query(sql, function (error: MysqlError | null, results: any) {
+                if (error) {
+                    reject(error);
+                }
+                resolve(results);
+            });
+        });
+    }
+ }
 
 const activityDB: ActicityDB = new ActicityDB();
 

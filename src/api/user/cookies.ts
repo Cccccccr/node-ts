@@ -7,15 +7,19 @@ const setCookies: RouterCon = {
     method: methodsEnum.get,
     path: '/setCookies',
     handle: async ctx => {
-        let cookies: string = '';
-        cookies = 'leonruncai - node frame';
-        ctx.cookies.set('username', 'leonruncai', {
-            maxAge,
-            httpOnly: true
-        });
-        ctx.body = {
-            cookies
-        };
+        try {
+            let cookies: string = '';
+            cookies = 'leonruncai - node frame';
+            ctx.cookies.set('username', 'leonruncai', {
+                maxAge,
+                httpOnly: true
+            });
+            ctx.body = {
+                cookies
+            };
+        } catch (err) {
+            console.log(err);
+        }
     }
 };
 

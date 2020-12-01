@@ -1,6 +1,8 @@
 import * as Router from 'koa-router';
 import User from './user/index';
 import Rsa from './rsa';
+import Activity from './activity';
+import Admin from './admin';
 
 import { RouterCon } from './comInterface';
 import { methodsEnum } from './comData';
@@ -10,7 +12,9 @@ const router = new Router();
 const basePath = '/fcgi';
 const modulesList: RouterCon[] = [
     User,
-    Rsa
+    Admin,
+    Rsa,
+    Activity,
 ];
 
 const pathArr: Array<string> = [];
@@ -50,5 +54,6 @@ function addPath2Router(modulesList: Array<RouterCon>, path: string = basePath) 
 }
 
 addPath2Router(modulesList);
+console.log(pathArr);
 
 export default router;

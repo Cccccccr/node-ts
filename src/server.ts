@@ -3,13 +3,9 @@ import {
   router,
   KoaStatic,
   cors,
-  Website
+  Website,
+  bodyparser,
 } from './importCom';
-
-import acticityDB from './modules/mysql';
-console.log(acticityDB);
-acticityDB.query();
-
 
 const app = require('./app');
 const website = new Website({
@@ -20,6 +16,7 @@ const website = new Website({
 
 app.use(cors());
 app.use(KoaStatic(path.join(__dirname, 'static')));
+app.use(bodyparser());
 
 app.use(router.routes());
 

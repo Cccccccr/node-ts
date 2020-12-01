@@ -7,6 +7,13 @@ const methodsEnum = {
     patch: 'patch',
 };
 
+const ReviewStatusEnum =  {
+    review: 1, // 审核中
+    access: 2, // 审核通过
+    reject: 3, // 审核拒绝
+};
+
 export {
-    methodsEnum
+    methodsEnum,
+    ReviewStatusEnum,
 };
