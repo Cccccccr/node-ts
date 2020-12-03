@@ -20,6 +20,19 @@ interface UserData {
     activityAuth?: number;
 }
 
+interface UserDataDB {
+    user_id?: number;
+    user_email?: string;
+    user_password?: string;
+    user_acatar?: string;
+    user_phone?: string;
+    user_name?: string;
+    commit_score?: number;
+    commit_auth?: number;
+    activity_score?: number;
+    activity_auth?: number;
+}
+
 interface AdminData {
     adminId?: number;
     account?: string;
@@ -41,6 +54,7 @@ interface ActivityData {
 export {
     RouterCon,
     UserData,
+    UserDataDB,
     AdminData,
     ActivityData
 };

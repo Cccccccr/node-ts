@@ -13,7 +13,25 @@ const ReviewStatusEnum =  {
     reject: 3, // 审核拒绝
 };
 
+const AuthEnum = {
+    access: 1, // 有权限
+    reject: 2, // 没有权限
+};
+
+const ParmasType = {
+    str: 'string',
+    num: 'number',
+};
+
+const AuthTypeEnum = {
+    commit: 1, // 评论
+    activity: 2, // 活动
+};
+
 export {
     methodsEnum,
     ReviewStatusEnum,
+    AuthEnum,
+    ParmasType,
+    AuthTypeEnum,
 };

@@ -1,9 +1,9 @@
 import session from './session';
 import cookies from './cookies';
-import { RouterCon, UserData } from '../comInterface';
-import { methodsEnum } from '../comData';
+import { RouterCon, UserData, UserDataDB } from '../comInterface';
+import { AuthTypeEnum, methodsEnum } from '../comData';
 import activityDB from '../../modules/mysql/index';
-import { failRespon } from '../utils';
+import { failRespon, getQuerySql } from '../utils';
 
 const login: RouterCon = {
     method: methodsEnum.post,
@@ -50,11 +50,111 @@ const checkLogin: RouterCon = {
     }
 };
 
+const getUserList: RouterCon = {
+    method: methodsEnum.post,
+    path: '/getUserList',
+    handle: async ctx => {
+        try {
+            const reqBody = ctx.request.body;
+            const { userId, email, name, phone, commitAuth, activityAuth } = reqBody;
+            const sql = getQuerySql('user', {
+                user_id: userId,
+                user_email: email,
+                user_name: name,
+                user_phone: phone,
+                commit_auth: commitAuth,
+                activity_auth: activityAuth,
+            });
+            console.log(sql);
+            const res = await activityDB.query(sql);
+            if (res) {
+                const respBody: Array<any> = [];
+                res.forEach((item: UserDataDB) => {
+                    respBody.push({
+                        userId: item.user_id,
+                        email: item.user_email,
+                        phone: item.user_phone,
+                        commitScore: item.commit_score,
+                        commitAuth: item.commit_auth,
+                        activityScore: item.activity_score,
+                        activityAuth: item.activity_auth,
+                        name: item.user_name,
+                    });
+                });
+                ctx.body = {
+                    infos: respBody,
+                    count: respBody.length,
+                };
+            } else {
+                failRespon(ctx, '请求失败');
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+};
+
+const deleteUser: RouterCon = {
+    method: methodsEnum.post,
+    path: '/deleteUser',
+    handle: async ctx => {
+        const reqBody = ctx.request.body;
+        const { userId } = reqBody;
+        const sql
+         = `delete from user where user_id = ${userId + 1}`;
+        if (userId) {
+            const res = await activityDB.query(sql);
+            if (res) {
+                ctx.body = {};
+            } else {
+                failRespon(ctx, '删除失败');
+            }
+        }
+    }
+};
+
+const authManage: RouterCon = {
+    method: methodsEnum.post,
+    path: '/authManage',
+    handle: async ctx => {
+        try {
+            const reqBody = ctx.request.body;
+            const { userId, authType, authStatus } = reqBody;
+            let updateKey = '';
+            switch (authType) {
+                case AuthTypeEnum.activity:
+                    updateKey = 'activity_auth';
+                    break;
+                case AuthTypeEnum.commit:
+                    updateKey = 'commit_auth';
+                    break;
+                default:
+                    break;
+            }
+            if (userId && updateKey) {
+                const sql
+                 = `update user set ${updateKey} = ${authStatus} where user_id = ${userId}`;
+                const res = await activityDB.query(sql);
+                if (res) {
+                    ctx.body = {};
+                } else {
+                    failRespon(ctx, '修改用户权限失败');
+                }
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+};
+
 const modules: Array<RouterCon> = [
     session,
     cookies,
     login,
     checkLogin,
+    getUserList,
+    deleteUser,
+    authManage,
 ];
 
 const User: RouterCon = {
