@@ -28,10 +28,16 @@ const AuthTypeEnum = {
     activity: 2, // 活动
 };
 
+const AddAndDeleteEnum = {
+    add: 1, // 增加
+    delete: 2, // 删除
+};
+
 export {
     methodsEnum,
     ReviewStatusEnum,
     AuthEnum,
     ParmasType,
     AuthTypeEnum,
+    AddAndDeleteEnum,
 };

@@ -31,7 +31,31 @@ const getQuerySql = (table: string, query?: any) => {
     return sql;
 };
 
+const getInsertSql = (table: string, data?: any) => {
+    let sql = `insert into ${table} set`;
+    if (data) {
+        const arr = Object.keys(data);
+        arr.forEach((item: any, index: number) => {
+            if (data[item]) {
+                sql += ` ${item} = `;
+                if (typeof data[item] === 'string') {
+                    sql += `'${data[item]}'`;
+                }
+                if (typeof data[item] === 'number') {
+                   sql += `${data[item]}`;
+                }
+                if (index !== arr.length - 1) {
+                    sql += ',';
+                }
+            }
+        });
+    }
+    console.log(sql);
+    return sql;
+};
+
 export {
     failRespon,
     getQuerySql,
+    getInsertSql,
 };

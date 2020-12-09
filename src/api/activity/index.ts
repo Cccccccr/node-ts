@@ -1,7 +1,7 @@
 import { RouterCon } from '../comInterface';
-import { methodsEnum } from '../comData';
+import { AddAndDeleteEnum, methodsEnum } from '../comData';
 import activityDB from '../../modules/mysql/index';
-import { failRespon } from '../utils';
+import { failRespon, getInsertSql } from '../utils';
 
 const stateEnum = {
     review: 1,
@@ -45,8 +45,100 @@ const create: RouterCon = {
     },
 };
 
+const like: RouterCon = {
+    method: methodsEnum.post,
+    path: '/like',
+    handle: async ctx => {
+        try {
+            const userId = ctx.cookies.get('uid');
+            const reqBody = ctx.request.body;
+            const { activityId, date, type } = reqBody;
+            let sql = '';
+            switch (type) {
+                case AddAndDeleteEnum.add:
+                    sql = getInsertSql('love', {
+                        activity_id: activityId,
+                        user_id: Number(userId),
+                        like_date: date,
+                    });
+                    break;
+                case AddAndDeleteEnum.delete:
+                    sql = `delete from love where user_id = ${userId} and activity_id = ${activityId}`;
+                    break;
+            }
+            if (userId && activityId && date) {
+                const res = await activityDB.query(sql);
+                if (res) {
+                    ctx.body = {};
+                } else {
+                    failRespon(ctx, '点赞失败');
+                }
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+};
+
+const favorite: RouterCon = {
+    method: methodsEnum.post,
+    path: '/favorite',
+    handle: async ctx => {
+        try {
+            const userId = ctx.cookies.get('uid');
+            const reqBody = ctx.request.body;
+            const { activityId, date, type } = reqBody;
+            let sql = '';
+            switch (type) {
+                case AddAndDeleteEnum.add:
+                    sql = getInsertSql('favorite', {
+                        activity_id: activityId,
+                        user_id: Number(userId),
+                        favorite_date: date,
+                    });
+                    break;
+                case AddAndDeleteEnum.delete:
+                    sql = `delete from favorite where user_id = ${userId} and activity_id = ${activityId}`;
+                    break;
+            }
+            if (userId && activityId && date && type) {
+                const res = await activityDB.query(sql);
+                if (res) {
+                    ctx.body = {};
+                } else {
+                    failRespon(ctx, '收藏失败');
+                }
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+};
+
+const deleteActivity: RouterCon = {
+    method: methodsEnum.post,
+    path: '/delete',
+    handle: async ctx => {
+        const reqBody = ctx.request.body;
+        const { activityId } = reqBody;
+        const sql
+         = `delete from activity where activity_id = ${activityId}`;
+        if (activityId) {
+            const res = await activityDB.query(sql);
+            if (res) {
+                ctx.body = {};
+            } else {
+                failRespon(ctx, '删除失败');
+            }
+        }
+    }
+};
+
 const modules: Array<RouterCon> = [
     create,
+    like,
+    favorite,
+    deleteActivity,
 ];
 
 const Activity: RouterCon = {

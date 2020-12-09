@@ -11,7 +11,7 @@ const app = require('./app');
 const website = new Website({
   scheme: 'http',
   host: 'localhost',
-  port: 8888
+  port: 9527,
 });
 
 app.use(cors());

@@ -1,7 +1,7 @@
 import session from './session';
 import cookies from './cookies';
 import { RouterCon, UserData, UserDataDB } from '../comInterface';
-import { AuthTypeEnum, methodsEnum } from '../comData';
+import { AuthTypeEnum, methodsEnum, ReviewStatusEnum } from '../comData';
 import activityDB from '../../modules/mysql/index';
 import { failRespon, getQuerySql } from '../utils';
 
@@ -147,6 +147,47 @@ const authManage: RouterCon = {
     }
 };
 
+const getActivityList: RouterCon = {
+    method: methodsEnum.post,
+    path: '/getActivityList',
+    handle: async ctx => {
+        try {
+            const reqBody = ctx.request.body;
+            const { status } = reqBody;
+            let sql
+             = `select distinct * from activity, user where activity.user_id = user.user_id`;
+            if (status) {
+                sql += ` and activity.activity_state = ${ReviewStatusEnum.access}`;
+            }
+            const res = await activityDB.query(sql);
+            if (res) {
+                const respBody: Array<any> = [];
+                res.forEach((item: any) => {
+                    respBody.push({
+                        activityId: item.activity_id,
+                        userId: item.user_id,
+                        content: item.activity_content,
+                        createDate: item.activity_create_date,
+                        start: item.activity_start,
+                        end: item.activity_end,
+                        place: item.activity_place,
+                        status: item.activity_state,
+                        userName: item.user_name,
+                    });
+                });
+                ctx.body = {
+                    infos: respBody,
+                    count: respBody.length,
+                };
+            } else {
+                failRespon(ctx, '请求失败');
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+};
+
 const modules: Array<RouterCon> = [
     session,
     cookies,
@@ -155,6 +196,7 @@ const modules: Array<RouterCon> = [
     getUserList,
     deleteUser,
     authManage,
+    getActivityList,
 ];
 
 const User: RouterCon = {
