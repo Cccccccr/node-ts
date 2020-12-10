@@ -13,6 +13,7 @@
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "clean": "rm dist/bundle.js",
     "clean-dist": "rm -rf dist",
+    "clean-static-dist": "rm -rf static/dist",
     "build-dev": "webpack -d --mode development",
     "build-prod": "npx webpack --config webpack.config.js --mode production",
     "watch-update": "nodemon --watch src/**/* -e ts,tsx --exec ts-node ./src/server.ts"
