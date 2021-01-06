@@ -9,7 +9,7 @@ import { methodsEnum } from './comData';
 
 /** api路由模块 */
 const router = new Router();
-const basePath = '/fcgi';
+const basePath = '/dist/fcgi';
 const modulesList: RouterCon[] = [
     User,
     Admin,

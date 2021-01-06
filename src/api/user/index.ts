@@ -36,16 +36,20 @@ const checkLogin: RouterCon = {
     method: methodsEnum.post,
     path: '/checkLogin',
     handle: async ctx => {
-        const uid = ctx.cookies.get('uid');
-        const sql
-         = `select distinct * from user where user_id = ${uid}`;
-        const res = await activityDB.query(sql);
-        if (res && res.length) {
-            const userData = res[0];
-            const respBody: UserData = getUserData(userData);
-            ctx.body = respBody;
-        } else {
-            failRespon(ctx, 'cookies失效');
+        try {
+            const uid = ctx.cookies.get('uid');
+            const sql
+             = `select distinct * from user where user_id = ${uid}`;
+            const res = uid !== undefined ? await activityDB.query(sql) : '';
+            if (res && res.length) {
+                const userData = res[0];
+                const respBody: UserData = getUserData(userData);
+                ctx.body = respBody;
+            } else {
+                failRespon(ctx, 'cookies失效');
+            }
+        } catch (err) {
+            console.error(err);
         }
     }
 };
